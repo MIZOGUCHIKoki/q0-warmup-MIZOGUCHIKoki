@@ -4,7 +4,7 @@
     global    _start
 _start:
     
-    mov   eax, 12356   ; ebx = 123456
+    mov   eax, 12356   ; ebx = 12356
     mov   edx, 0
     mov   ebx, 3600     ; ecx = 3600
     div   ebx           ; eax / ebx = eax, eax % ebx = edx
