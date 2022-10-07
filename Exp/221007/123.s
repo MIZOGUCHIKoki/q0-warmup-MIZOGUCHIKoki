@@ -2,6 +2,10 @@
         section .text
         global  _start
 _start:
-        mov     eax, 1          ; システムコール番号
-        mov     ebx, 123        ; 終了コード
-        int     0x80            ; exitシステムコール
+        mov     ebx, 123        
+        add     ebx, 45         
+        sub     ebx, 67
+        add     ebx, 8
+        sub     ebx, 9
+        mov     eax, 1          ;システムコール
+        int     0x80            ;exitシステムコール

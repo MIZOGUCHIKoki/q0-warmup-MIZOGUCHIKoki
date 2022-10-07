@@ -1,4 +1,4 @@
-        ; 123を終了コードとして出力するあまり意味のないプログラム
+        ; 演習1.2-1
         section .text
         global  _start
 _start:
