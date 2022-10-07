@@ -1,4 +1,4 @@
-        ; 演習1.2-1
+; 演習1.2-1
         section .text
         global  _start
 _start:
