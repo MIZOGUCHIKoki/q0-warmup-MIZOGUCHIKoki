@@ -5,15 +5,6 @@ _start:
   mov ecx,  ndata1  ; data1.length
   mov esi,  data1   ; data1
 
-check:
-  cmp ecx,  0
-  je  block0
-  dec ecx
-  cmp [esi],  dword 255
-  jg  endp
-
-  add esi,  4
-  jmp check
 
 block0:
   mov edi,  data2   ; data2
@@ -78,7 +69,7 @@ endp:
   int 0x80
 
   section .data
-data1:  dd    3,1,4,5,9,2000000000
-ndata1: equ   ($ - data1)/4  
 data2:  times 256 dd 0      
 ndata2: equ   ($ - data2)/4
+data1:  dd    0
+ndata1: equ   ($ - data1)/4  
