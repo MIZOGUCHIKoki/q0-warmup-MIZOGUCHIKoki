@@ -14,7 +14,7 @@ block0:
   dec ecx       ; ecx--
   
   mov eax,  [esi]   ; eax = data1[i]
-  mov ebx,  1
+  mov ebx,  4
 
   mul ebx           ; data1[i] * 4 = edx eax
   mov edx,  0
