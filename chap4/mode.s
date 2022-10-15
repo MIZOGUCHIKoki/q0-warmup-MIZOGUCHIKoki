@@ -28,7 +28,7 @@ block0:
 maxblock:
   mov eax,  data2
   mov ecx,  ndata2
-  mov ebx,  0        ; 最瀕値
+  mov ebx,  0        ; 最頻値
   loop0:
     cmp ecx,  0
     je  searchblock
@@ -69,7 +69,7 @@ endp:
   int 0x80
 
   section .data
-data2:  times 256 dd 0      
-ndata2: equ   ($ - data2)/4
-data1:  dd    0
+data1:  dd    0, 255
 ndata1: equ   ($ - data1)/4  
+data2:  times 255 dd 0      
+ndata2: equ   ($ - data2)/4
