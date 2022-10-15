@@ -69,5 +69,5 @@ endp:
   section .data
 data1:  dd    3, 1, 4, 1, 5, 9, 2
 ndata1: equ   ($ - data1)/4  
-data2:  times 255 dd 0      
+data2:  times 256 dd 0      
 ndata2: equ   ($ - data2)/4
