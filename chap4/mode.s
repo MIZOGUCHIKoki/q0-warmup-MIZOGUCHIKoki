@@ -2,52 +2,72 @@
   global  _start
 
 _start:
-    mov eax, data1    ; data1[iw]
-    mov ebx, data2    ; data2[jw]
-    mov ecx, ndata1   ; data1.length
-    mov edx, 0        ; iw
-    mov esi, ndata2   ; data2.length
+  mov ecx,  ndata1  ; data1.length
+  mov esi,  data1   ; data1
+block0:
+  mov edi,  data2   ; data2
 
-loop0:
-    mov edi, 0        ; jw = 0
-    loop01:
-        cmp [eax], edi  ; data1[iw] == jw
-        je loop011
-        jmp loop012
-        loop011:
-            add [ebx], dword 1  ; data2[jw]++
-        loop012:
-            inc edi             ; jw++
-            add ebx, 4          ; data2[jw++]
-            cmp esi, edi        ; data2.length > jw
-            jg loop01           ; not break
-    inc edx       ; iw++
-    add eax, 4    ; data1[iw++]
-    cmp ecx, edx  ; data1.length <= iw
-    jle block1
+  cmp ecx,  0
+  je  maxblock
+  dec ecx       ; ecx--
+  
+  mov eax,  [esi]   ; eax = data1[i]
+  mov ebx,  4
 
-block1:
-    mov edx,  0   ;iw
-    mov edi,  0   ;max
-    mov eax,  data2 ; data2[iw]
+  mul ebx           ; data1[i] * 4 = edx eax
+  mov edx,  0
+  
+  add edi,  eax
+  add [edi],  dword 1 ; data2[data[i]]++
+  add esi,  4
+  jmp block0
 
-    loop1:
-        cmp edi,  [eax] ; max <= data2[iw]
-        jg  loop11
-        mov edi,  [eax] ; max = data2[iw]
-        loop11:
-            cmp edi, esi; iw <= data2.length
-            jle endp
-        inc edx
-        add eax, 4
-        jmp loop1
+   
+maxblock:
+  mov eax,  data2
+  mov ecx,  ndata2
+  mov ebx,  0        ; 最瀕値
+  loop0:
+    cmp ecx,  0
+    je  searchblock
+
+    cmp [eax],  ebx   ; data2[i] >= max
+    jg true
+    ; False
+    dec ecx
+    add eax,  4
+    jmp loop0
+
+    true:
+      mov ebx,  [eax] ; max = data2[i]
+      dec ecx
+      add eax,  4
+      jmp loop0
+
+searchblock:
+  mov eax,  data2
+  mov ecx,  ndata2
+  mov edx,  ebx     ; max
+  mov ebx,  0       ; value
+  loop1:
+    cmp ecx,  0
+    je  endp
+    
+    cmp [eax],  edx  ; data2 == max
+    je  endp
+
+    inc ebx
+    add eax,  4
+    dec ecx 
+    jmp loop1
+    
+
 endp:
-    mov ebx,  edi
-    mov eax,  1
-    int 0x80
+  mov eax,  1
+  int 0x80
 
   section .data
-data1:  dd    3, 1, 4, 5, 9, 2
+data1:  dd    3, 1, 4, 1, 5, 9, 2
 ndata1: equ   ($ - data1)/4  
-data2:  times 256 dd 0      
+data2:  times 255 dd 0      
 ndata2: equ   ($ - data2)/4
