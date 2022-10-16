@@ -8,10 +8,11 @@ _start:
 
 loop:
   cmp ecx,  0
-  je  setdatap
+  je  endp
   
-  mov edi,  [eax]
-  mov [edx + (ecx - 1)*4],  eax   ; data2[ndata-i] = data1[i]
+  mov edi,  [eax]                 ; edi = data1[i]
+
+  mov [edx + (ecx - 1)*4],  edi   ; data2[ndata-i] = data1[i]
   dec ecx
   add eax,  4
   jmp loop
@@ -24,7 +25,7 @@ setdata:
   dec ecx
 
   mov esi,      [edx]
-  mov eax,      esi
+  mov [eax],      esi
   jmp setdata
 
 endp:
