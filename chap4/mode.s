@@ -22,8 +22,9 @@ loop:
 
    blockif1:
      cmp ebx,  [eax] ; mode <= data1[i]
-     jle blockif2    ; --> blockif2
+     jle loopl    ; --> blockif2
      mov ebx,  [eax] ; mode = data1[i]
+     jmp loopl
 
    blockif2:
      cmp esi,  edi   ; if(data2[data1[i]] > max )
@@ -40,6 +41,7 @@ loop:
 
 endp:
   mov eax,  1
+  ;mov ebx,  [data2]
   int 0x80
 
   section .data
