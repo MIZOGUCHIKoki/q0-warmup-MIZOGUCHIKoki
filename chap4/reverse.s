@@ -35,6 +35,8 @@ endp:
   
 
   section .data
-data1:  dd    3,1,4,1,5,9,2
+data1:  times 123 dd 0
+        dd 1
+        tiems 132 dd 0
 ndata:  equ   ($ -data1)/4
 data2:  times ndata dd 0
