@@ -19,6 +19,8 @@ loop:
 
 setdatap:
   mov ecx,  ndata
+  mov eax,  data1
+  mov edx,  data2
 setdata:
   cmp ecx,  0
   jnp endp
@@ -26,6 +28,8 @@ setdata:
 
   mov esi,      [edx]
   mov [eax],      esi
+  add edx,  4
+  add eax,  4
   jmp setdata
 
 endp:
@@ -36,7 +40,5 @@ endp:
 
   section .data
 data1:  times 123 dd 0
-        dd 1
-        tiems 132 dd 0
 ndata:  equ   ($ -data1)/4
 data2:  times ndata dd 0
