@@ -45,6 +45,6 @@ endp:
   int 0x80
 
   section .data
-data1:  dd  0
+data1:  dd  1
 ndata:  equ ($ - data1)/4
 data2:  times 256 dd  0
