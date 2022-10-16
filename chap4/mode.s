@@ -11,13 +11,14 @@ loop:
   je  endp
   dec ecx         ; ndata--
   
-  mov edx,  [data1]
+  mov edx,  [eax]             ; edx = data1[i]
   mov esi,  [data2 + edx * 4] ; esi = data2[data1[i]]
-  add esi,  dword 1
+  add [data2 + edx * 4],dword 1
 
-   cmp esi,  edi     ; if(data2[data1[i]] == max) {
-   je  blockif1      ;    mode > data1[i] --> mode = data1[i]
-   jmp blockif2      ; }
+
+  cmp esi,  edi     ; if(data2[data1[i]] == max) {
+  je  blockif1      ;    mode > data1[i] --> mode = data1[i]
+  jmp blockif2      ; }
 
    blockif1:
      cmp ebx,  [eax] ; mode <= data1[i]
@@ -25,13 +26,13 @@ loop:
      mov ebx,  [eax] ; mode = data1[i]
 
    blockif2:
-     cmp esi,  edi   ; data2[data1[i]] > max
-     jg  blockif3
+     cmp esi,  edi   ; if(data2[data1[i]] > max )
+     jg blockif3     ; 
      jmp loopl
 
      blockif3:
-       mov ebx,  [eax]
-       inc ebx 
+       mov ebx,  [eax]  ; mode = data1[i]
+       inc edi          ; max++
 
   loopl:
   add eax,  4
@@ -42,6 +43,6 @@ endp:
   int 0x80
 
   section .data
-data1:  dd 1,1,1,1
+data1:  dd  1,1,1,2,2,2,2,0,0,0,0
 ndata:  equ ($ - data1)/4
 data2:  times 256 dd  0
