@@ -4,7 +4,7 @@ _start:
   mov eax,  data1
   mov ecx,  ndata
 
-  mov ebx,  256     ; mode
+  mov ebx,  255     ; mode
   mov edi,  1       ; max
 loop:
   cmp ecx,  0     ; ndata == 0
@@ -12,8 +12,8 @@ loop:
   dec ecx         ; ndata--
   
   mov edx,  [eax]                 ; edx = data1[i]
-  mov esi,  [data2 + edx * 4]     ; esi = data2[data1[i]]
   add [data2 + edx * 4], dword 1
+  mov esi,  [data2 + edx * 4]     ; esi = data2[data1[i]]
 
 
   cmp esi,  edi     ; if(data2[data1[i]] == max) {
@@ -22,11 +22,11 @@ loop:
 
    blockif1:
      cmp ebx,  [eax] ; mode <= data1[i]
-     jle loopl    ; --> blockif2
+     jle loopl       ; --> blockif2
      mov ebx,  [eax] ; mode = data1[i]
      jmp loopl
 
-   blockif2:
+  blockif2:
      cmp esi,  edi   ; if(data2[data1[i]] > max )
      jg blockif3     ; 
      jmp loopl       ; 
@@ -41,7 +41,6 @@ loop:
 
 endp:
   mov eax,  1
-  ;mov ebx,  [data2]
   int 0x80
 
   section .data
