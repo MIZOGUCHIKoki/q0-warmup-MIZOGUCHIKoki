@@ -8,7 +8,7 @@ _start:
 
 loop:
   cmp ecx,  0
-  je  endp
+  je  setdatap
   
   mov edi,  [eax]                 ; edi = data1[i]
 
@@ -23,10 +23,10 @@ setdatap:
   mov edx,  data2
 setdata:
   cmp ecx,  0
-  jnp endp
+  je endp
   dec ecx
 
-  mov esi,      [edx]
+  mov esi,          [edx]
   mov [eax],      esi
   add edx,  4
   add eax,  4
@@ -39,6 +39,6 @@ endp:
   
 
   section .data
-data1:  times 123 dd 0
+data1:  dd    1,2,3,4,5,6,7,8,9
 ndata:  equ   ($ -data1)/4
 data2:  times ndata dd 0
