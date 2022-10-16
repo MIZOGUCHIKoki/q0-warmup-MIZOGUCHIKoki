@@ -1,75 +1,47 @@
-  section .text
+  section .text 
   global  _start
-
 _start:
-  mov ecx,  ndata1  ; data1.length
-  mov esi,  data1   ; data1
+  mov eax,  data1
+  mov ecx,  ndata
 
-
-block0:
-  mov edi,  data2   ; data2
-
-  cmp ecx,  0
-  je  maxblock
-  dec ecx       ; ecx--
+  mov ebx,  255     ; mode
+  mov edi,  1       ; max
+loop:
+  cmp ecx,  0     ; ndata == 0
+  je  endp
+  dec ecx         ; ndata--
   
-  mov eax,  [esi]   ; eax = data1[i]
-  mov ebx,  4
+  mov edx,  [data1]
+  mov esi,  [data2 + edx * 4] ; esi = data2[data1[i]]
+  add esi,  dword 1
 
-  mul ebx           ; data1[i] * 4 = edx eax
-  mov edx,  0
-  
-  add edi,  eax
-  add [edi],  dword 1 ; data2[data[i]]++
-  add esi,  4
-  jmp block0
+   cmp esi,  edi     ; if(data2[data1[i]] == max) {
+   je  blockif1      ;    mode > data1[i] --> mode = data1[i]
+   jmp blockif2      ; }
 
-   
-maxblock:
-  mov eax,  data2
-  mov ecx,  ndata2
-  mov ebx,  0        ; 最頻値
-  loop0:
-    cmp ecx,  0
-    je  searchblock
+   blockif1:
+     cmp ebx,  [eax] ; mode <= data1[i]
+     jle blockif2    ; --> blockif2
+     mov ebx,  [eax] ; mode = data1[i]
 
-    cmp [eax],  ebx   ; data2[i] >= max
-    jg true
-    ; False
-    dec ecx
-    add eax,  4
-    jmp loop0
+   blockif2:
+     cmp esi,  edi   ; data2[data1[i]] > max
+     jg  blockif3
+     jmp loopl
 
-    true:
-      mov ebx,  [eax] ; max = data2[i]
-      dec ecx
-      add eax,  4
-      jmp loop0
+     blockif3:
+       mov ebx,  [eax]
+       inc ebx 
 
-searchblock:
-  mov eax,  data2
-  mov ecx,  ndata2
-  mov edx,  ebx     ; max
-  mov ebx,  0       ; value
-  loop1:
-    cmp ecx,  0
-    je  endp
-    
-    cmp [eax],  edx  ; data2 == max
-    je  endp
-
-    inc ebx
-    add eax,  4
-    dec ecx 
-    jmp loop1
-    
+  loopl:
+  add eax,  4
+  jmp loop
 
 endp:
   mov eax,  1
   int 0x80
 
   section .data
-data1:  dd    0, 255
-ndata1: equ   ($ - data1)/4  
-data2:  times 256 dd 0      
-ndata2: equ   ($ - data2)/4
+data1:  dd 1,1,1,1
+ndata:  equ ($ - data1)/4
+data2:  times 256 dd  0
