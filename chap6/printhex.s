@@ -5,19 +5,6 @@ ndigit: equ 8
   section .text
   global  _start
 _start:
-;  ; Nの桁数をカウント
-;  mov edi,  16   ; 割る数
-;  mov esi,  1    ; 桁数
-;  mov eax,  N    ; (1932)
-;countK:
-;  mov edx,  0     
-;  div edi         ; edx eax / edi = eax 1932 / 10 = 193
-;  cmp eax,  0
-;  je endcountK
-;  inc esi          ; 桁数++
-;  jmp countK
-
-; endcountK:
   mov esi, ndigit
 
 writeProcess:
@@ -42,8 +29,6 @@ loop0:
   endl:
     mov [ecx], dl           ; 書き込み
     jmp loop0
-
-
 
 writeP:
   mov eax,  4             ; write システムコール番号
